@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.css';
-import App from './react-components/App';
+import Main from './react-components/Main';
 import reportWebVitals from './js/reportWebVitals';
+import {Provider} from "react-redux";
+import {store} from "./js/store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <Main/>
+        </Provider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

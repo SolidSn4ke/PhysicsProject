@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+#graph{
+    border: 2px solid aqua;
+    width: auto;
+    height: 600px;
+    margin: 10px;
+}
+
+#controls{
+    display: table-column;
+    text-align: center;
+    border: 2px solid aqua;
+    height: 100%;
+    width: 30%;
+    margin: 10px;
+    padding: 20px;
+}
+
+#cases{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scenarioButton{
+    padding: 5px;
+    margin: 5px;
+    border: 2px solid;
+    border-radius: 10px;
+}
+
+body {
+    background: grey;
+}
+
