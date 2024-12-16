@@ -109,8 +109,16 @@ const Scene = (props) => {
             },
         });
 
-        let scale = 1
-        const car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale);
+        const mouse = Matter.Mouse.create(render.canvas);
+        const mouseConstraint = Matter.MouseConstraint.create(engine, {
+            mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false,
+                }
+            }
+        });
 
         let floor = Bodies.rectangle(400, 600, 800, 20, {
             isStatic: true,
@@ -119,27 +127,42 @@ const Scene = (props) => {
             },
         })
 
-        const ball = Bodies.circle(700, 450, 10, {
-            restitution: 0.9,
-            mass: props.ballMass,
-            render: {
-                fillStyle: 'yellow',
-            },
-        });
 
-        const mouse = Matter.Mouse.create(render.canvas);
-        const mouseConstraint = Matter.MouseConstraint.create(engine, {
-            mouse,
-            constraint: {
-                stiffness: 0.2,
+        let car = null;
+        let ball = null;
+
+        /** Сцена для первого случая*/
+        if (props.cases === 1){
+            let scale = 1
+            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale);
+
+            ball = Bodies.circle(700, 450, 10, {
+                restitution: 0.9,
+                mass: props.ballMass,
                 render: {
-                    visible: true,
-                }
-            }
-        });
+                    fillStyle: 'yellow',
+                },
+            });
 
+            World.add(engine.world, [floor, ball, mouseConstraint, car]);
+        }
 
-        World.add(engine.world, [floor, ball, mouseConstraint, car]);
+        /** Сцена для второго случая*/
+        if (props.cases === 2){
+            let scale = 1
+            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale);
+            const car2 = newCar(400, 540, 150 * scale, 50 * scale, 30 * scale)
+
+            ball = Bodies.circle(700, 450, 10, {
+                restitution: 0.9,
+                mass: props.ballMass,
+                render: {
+                    fillStyle: 'yellow',
+                },
+            });
+
+            World.add(engine.world, [floor, ball, mouseConstraint, car, car2]);
+        }
 
         Body.applyForce(ball, ball.position, {
             x: getVelocity(props.x, props.k, ball.mass),
@@ -150,12 +173,11 @@ const Scene = (props) => {
             x: -getVelocity(props.x, props.k, ball.mass) * ball.mass / Composite.allBodies(car)[1].mass,
             y: 0
         })
-        console.log(-getVelocity(props.x, props.k, ball.mass) * ball.mass / Composite.allBodies(car)[0].mass)
 
         const runner = Runner.create();
         Runner.run(runner, engine)
         Render.run(render);
-    }, [props.ballMass, props.x, props.k, props.carMass]);
+    }, [props.ballMass, props.x, props.k, props.carMass, props.cases]);
 
     return (
         <div ref={boxRef}>
