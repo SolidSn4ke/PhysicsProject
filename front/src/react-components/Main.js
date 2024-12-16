@@ -25,13 +25,8 @@ function Main() {
     const friction = useSelector((state) => state.friction)
     const dispatch = useDispatch();
 
-    /** 3 случай */
-    if (cases === 3) {
-
-    }
-
-    /** 2 случай */
-    if (cases === 2) {
+    /** 2 и 3 случаи */
+    if (cases === 2 || cases === 3) {
         return (
             <div className="wrapper">
                 {/** Блок с графикой */}
@@ -56,7 +51,7 @@ function Main() {
                     <Slider id={"cartSlider"} value={"Масса тележки"} min={1} max={100}
                             onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                     <div className={"hide"}>{carMass}</div>
-                    <Slider value={"Масса второй тележки"} min={1} max={10}
+                    <Slider value={"Масса второй тележки"} min={1} max={100}
                             onChange={(e) => dispatch(changeCar2Mass(e.target.value))}/>
                     <div className={"hide"}>{car2Mass}</div>
                     <Slider value={"Жесткость пружины"} min={100} max={500}

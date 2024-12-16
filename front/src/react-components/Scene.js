@@ -6,7 +6,7 @@ import Matter from 'matter-js';
  * x - деформация пружины (см)
  * k - коэффициент жесткости пружины (0.2 <= k <= 1)
  * */
-function elasticPotentialEnergy(x, k){
+function elasticPotentialEnergy(x, k) {
     return 0.5 * k / 500 * x ** 2
 }
 
@@ -15,7 +15,7 @@ function elasticPotentialEnergy(x, k){
  * k - коэффициент жесткости пружины (0.2 <= k <= 1)
  * m - масса шарика
  * */
-function getVelocity(x, k, m){
+function getVelocity(x, k, m) {
     return Math.sqrt(2 * elasticPotentialEnergy(x, k) / m)
 }
 
@@ -23,14 +23,14 @@ const Scene = (props) => {
     const boxRef = useRef(null);
     const canvasRef = useRef(null);
 
-    function newCar(xx, yy, width, height, wheelSize, mass) {
+
+    function newCar(xx, yy, width, height, wheelSize, group, mass, withBarrier) {
         const Body = Matter.Body,
             Bodies = Matter.Bodies,
             Composite = Matter.Composite,
             Constraint = Matter.Constraint;
 
-        const group = Body.nextGroup(true),
-            wheelBase = 20,
+        const wheelBase = 20,
             wheelAOffset = -width * 0.5 + wheelBase,
             wheelBOffset = width * 0.5 - wheelBase,
             wheelYOffset = height * 0.5;
@@ -60,6 +60,7 @@ const Scene = (props) => {
             friction: props.friction
         });
 
+
         const axelA = Constraint.create({
             bodyB: body,
             pointB: {x: wheelAOffset, y: wheelYOffset},
@@ -82,6 +83,29 @@ const Scene = (props) => {
         Composite.addConstraint(car, axelA);
         Composite.addConstraint(car, axelB);
 
+        if (withBarrier === true) {
+            let barrier = Bodies.rectangle(xx, yy, 10, 200, {
+                id: 1000,
+                inertia: Infinity,
+                mass: mass,
+                collisionFilter: {
+                    group: group
+                }
+            })
+
+            const attachBarrier = Constraint.create({
+                bodyB: body,
+                pointB: {x: 0, y: -10},
+                bodyA: barrier,
+                pointA: {x: 0, y: 50},
+                stiffness: 1,
+                length: 0
+            })
+
+            Composite.addBody(car, barrier)
+            Composite.addConstraint(car, attachBarrier)
+        }
+
         return car;
     }
 
@@ -92,6 +116,8 @@ const Scene = (props) => {
         let Bodies = Matter.Bodies;
         let Runner = Matter.Runner
         let Composite = Matter.Composite
+        let Events = Matter.Events
+        let Constraint = Matter.Constraint
         let Body = Matter.Body
 
         let engine = Engine.create({});
@@ -127,14 +153,14 @@ const Scene = (props) => {
             },
         })
 
-
         let car = null;
         let ball = null;
 
         /** Сцена для первого случая*/
-        if (props.cases === 1){
+        if (props.cases === 1) {
+            const group = Body.nextGroup(true)
             let scale = 1
-            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale, props.carMass);
+            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale, group, props.carMass);
 
             ball = Bodies.circle(700, 450, 10, {
                 restitution: 0.9,
@@ -148,10 +174,12 @@ const Scene = (props) => {
         }
 
         /** Сцена для второго случая*/
-        if (props.cases === 2){
+        if (props.cases === 2) {
+            const group1 = Body.nextGroup(true)
+            const group2 = Body.nextGroup(true)
             let scale = 1
-            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale, props.carMass);
-            const car2 = newCar(400, 540, 150 * scale, 50 * scale, 30 * scale, props.car2Mass)
+            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale, group1, props.carMass);
+            const car2 = newCar(400, 540, 150 * scale, 50 * scale, 30 * scale, group2, props.car2Mass)
 
             ball = Bodies.circle(700, 450, 10, {
                 restitution: 0.9,
@@ -163,6 +191,54 @@ const Scene = (props) => {
 
             World.add(engine.world, [floor, ball, mouseConstraint, car, car2]);
         }
+
+        /** Сцена для третьего случая*/
+        if (props.cases === 3) {
+            const group1 = Body.nextGroup(true)
+            const group2 = Body.nextGroup(true)
+            let scale = 1
+            car = newCar(100, 540, 150 * scale, 50 * scale, 30 * scale, group1, props.carMass);
+            const car2 = newCar(400, 519, 150 * scale, 50 * scale, 30 * scale, group2, props.car2Mass, true)
+
+            ball = Bodies.circle(100, 450, 10, {
+                restitution: 0.9,
+                mass: props.ballMass,
+                render: {
+                    fillStyle: 'yellow',
+                },
+            });
+
+            Events.on(engine, 'afterUpdate', () => {
+                if (Matter.Collision.collides(ball, Composite.get(car2, 1000, "body")) !== null) {
+                    //ball.collisionFilter.group = group2;
+                    let newBall = Bodies.circle(Composite.get(car2, 1000, "body").position.x, Composite.get(car2, 1000, "body").position.y, 10, {
+                        restitution: 0.9,
+                        collisionFilter: {
+                            group: group2
+                        },
+                        mass: props.ballMass,
+                        render: {
+                            fillStyle: 'yellow',
+                        },
+                    });
+                    const attachBall = Constraint.create({
+                        bodyB: Composite.get(car2, 1000, "body"),
+                        bodyA: newBall,
+                        stiffness: 1,
+                        length: 0
+                    })
+                    Composite.addBody(car2, newBall)
+                    Composite.addConstraint(car2, attachBall)
+
+                    Events.off(engine)
+                    World.remove(engine.world, ball)
+                }
+            })
+
+            World.add(engine.world, [floor, ball, mouseConstraint, car, car2]);
+        }
+
+        console.log(getVelocity(props.x, props.k, ball.mass))
 
         Body.applyForce(ball, ball.position, {
             x: getVelocity(props.x, props.k, ball.mass),
