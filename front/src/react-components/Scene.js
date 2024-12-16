@@ -23,7 +23,7 @@ const Scene = (props) => {
     const boxRef = useRef(null);
     const canvasRef = useRef(null);
 
-    function newCar(xx, yy, width, height, wheelSize) {
+    function newCar(xx, yy, width, height, wheelSize, mass) {
         const Body = Matter.Body,
             Bodies = Matter.Bodies,
             Composite = Matter.Composite,
@@ -37,7 +37,7 @@ const Scene = (props) => {
 
         const car = Composite.create({label: 'Car'}),
             body = Bodies.rectangle(xx, yy, width, height, {
-                mass: props.carMass,
+                mass: mass,
                 collisionFilter: {
                     group: group
                 },
@@ -48,16 +48,16 @@ const Scene = (props) => {
             collisionFilter: {
                 group: group
             },
-            mass: props.carMass,
-            friction: 0.8
+            mass: mass,
+            friction: props.friction
         });
 
         const wheelB = Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
                 group: group
             },
-            mass: props.carMass,
-            friction: 0.8
+            mass: mass,
+            friction: props.friction
         });
 
         const axelA = Constraint.create({
@@ -134,7 +134,7 @@ const Scene = (props) => {
         /** Сцена для первого случая*/
         if (props.cases === 1){
             let scale = 1
-            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale);
+            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale, props.carMass);
 
             ball = Bodies.circle(700, 450, 10, {
                 restitution: 0.9,
@@ -150,8 +150,8 @@ const Scene = (props) => {
         /** Сцена для второго случая*/
         if (props.cases === 2){
             let scale = 1
-            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale);
-            const car2 = newCar(400, 540, 150 * scale, 50 * scale, 30 * scale)
+            car = newCar(700, 540, 150 * scale, 50 * scale, 30 * scale, props.carMass);
+            const car2 = newCar(400, 540, 150 * scale, 50 * scale, 30 * scale, props.car2Mass)
 
             ball = Bodies.circle(700, 450, 10, {
                 restitution: 0.9,
@@ -177,7 +177,11 @@ const Scene = (props) => {
         const runner = Runner.create();
         Runner.run(runner, engine)
         Render.run(render);
-    }, [props.ballMass, props.x, props.k, props.carMass, props.cases]);
+
+        return () => {
+            Matter.Engine.clear(engine)
+        }
+    }, [props.ballMass, props.x, props.k, props.carMass, props.cases, props.car2Mass, props.friction]);
 
     return (
         <div ref={boxRef}>

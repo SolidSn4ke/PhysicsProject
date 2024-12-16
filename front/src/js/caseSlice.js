@@ -4,11 +4,12 @@ export const caseSlice = createSlice({
     name: 'cases',
     initialState: {
         case: 1,
-        ballMass: 1,
-        stiffness: 1,
-        deformation: 1,
-        carMass: 2,
-        car2Mass: 2
+        ballMass: 50,
+        stiffness: 300,
+        deformation: 5,
+        carMass: 50,
+        car2Mass: 50,
+        friction: 0.5
     },
     reducers: {
         changeCase: (state, action) => {
@@ -28,10 +29,13 @@ export const caseSlice = createSlice({
         },
         changeCar2Mass: (state, action) => {
           state.car2Mass = action.payload
+        },
+        changeFriction: (state, action) => {
+            state.friction = action.payload
         }
     }
 })
 
-export const {changeCase, changeBallMass, changeStiffness, changeDeformation, changeCarMass, changeCar2Mass} = caseSlice.actions
+export const {changeCase, changeBallMass, changeStiffness, changeDeformation, changeCarMass, changeCar2Mass, changeFriction} = caseSlice.actions
 
 export default caseSlice.reducer
