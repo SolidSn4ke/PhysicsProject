@@ -76,7 +76,7 @@ function Main() {
                         <input type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
                     </div>
                     <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100}
-                                 friction={friction} isSleeping={isSleeping}></ResultTable>
+                                 friction={friction} isSleeping={isSleeping} car2Mass={car2Mass / 1000} cases={cases}></ResultTable>
                 </div>
             </div>
         )
@@ -121,7 +121,7 @@ function Main() {
                     <input type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
                 </div>
                 <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100}
-                             friction={friction} isSleeping={isSleeping} cases={cases}></ResultTable>
+                             friction={friction} isSleeping={isSleeping} cases={cases} car2Mass={car2Mass}></ResultTable>
             </div>
         </div>
     );
