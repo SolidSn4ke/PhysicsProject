@@ -253,7 +253,14 @@ const Scene = (props) => {
                 }
             })
 
-            World.add(engine.world, [floor, ball, mouseConstraint, car, car2]);
+            let wall = Bodies.rectangle(0, 300, 20, 600, {
+                isStatic: true,
+                render: {
+                    fillStyle: 'blue',
+                },
+            })
+
+            World.add(engine.world, [wall, floor, ball, mouseConstraint, car, car2]);
         }
 
         Body.applyForce(ball, ball.position, {

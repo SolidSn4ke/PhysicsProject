@@ -52,23 +52,23 @@ function Main() {
                         <input type={"button"} className={"scenarioButton"} id={"case3"} value={"Ситуация 3"}
                                onClick={() => dispatch(changeCase(3))}/>
                     </div>
-                    <Slider id={"ballSlider"} value={"Масса шарика (грамм)"} min={5} max={15} onChange={(e) => {
+                    <Slider initialValue={ballMass} id={"ballSlider"} value={"Масса шарика (грамм)"} min={5} max={15} onChange={(e) => {
                         dispatch(changeBallMass(e.target.value))
                     }}/>
                     <div className={"hide"}>{ballMass}</div>
-                    <Slider id={"cartSlider"} value={"Масса тележки (грамм)"} min={10} max={100}
+                    <Slider initialValue={carMass} id={"cartSlider"} value={"Масса тележки (грамм)"} min={10} max={100}
                             onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                     <div className={"hide"}>{carMass}</div>
-                    <Slider value={"Масса второй тележки (грамм)"} min={10} max={100}
+                    <Slider initialValue={car2Mass} value={"Масса второй тележки (грамм)"} min={10} max={100}
                             onChange={(e) => dispatch(changeCar2Mass(e.target.value))}/>
                     <div className={"hide"}>{car2Mass}</div>
-                    <Slider value={"Жесткость пружины"} min={100} max={500}
+                    <Slider initialValue={stiffness} value={"Жесткость пружины"} min={100} max={500}
                             onChange={(e) => dispatch(changeStiffness(e.target.value))}/>
                     <div className={"hide"}>{stiffness}</div>
-                    <Slider value={"Деформация пружины (см)"} max={10} min={1}
+                    <Slider initialValue={deformation} value={"Деформация пружины (см)"} max={10} min={1}
                             onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                     <div className={"hide"}>{deformation}</div>
-                    <Slider value={"Коэффициент трения"} min={0.1} max={1}
+                    <Slider initialValue={friction} value={"Коэффициент трения"} min={0.1} max={1}
                             onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                     <div className={"hide"}>{friction}</div>
                     <div>
@@ -100,20 +100,20 @@ function Main() {
                     <input type={"button"} className={"scenarioButton"} id={"case3"} value={"Ситуация 3"}
                            onClick={() => dispatch(changeCase(3))}/>
                 </div>
-                <Slider id={"ballSlider"} value={"Масса шарика (грамм)"} min={5} max={15} onChange={(e) => {
+                <Slider initialValue={ballMass} id={"ballSlider"} value={"Масса шарика (грамм)"} min={5} max={15} onChange={(e) => {
                     dispatch(changeBallMass(e.target.value))
                 }}/>
                 <div className={"hide"}>{ballMass}</div>
-                <Slider id={"cartSlider"} value={"Масса тележки (грамм)"} min={10} max={100}
+                <Slider initialValue={carMass} id={"cartSlider"} value={"Масса тележки (грамм)"} min={10} max={100}
                         onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                 <div className={"hide"}>{carMass}</div>
-                <Slider value={"Жесткость пружины"} min={100} max={500}
+                <Slider initialValue={stiffness} value={"Жесткость пружины"} min={100} max={500}
                         onChange={(e) => dispatch(changeStiffness(e.target.value))}/>
                 <div className={"hide"}>{stiffness}</div>
-                <Slider value={"Деформация пружины (см)"} max={10} min={1}
+                <Slider initialValue={deformation} value={"Деформация пружины (см)"} max={10} min={1}
                         onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                 <div className={"hide"}>{deformation}</div>
-                <Slider value={"Коэффициент трения"} min={0.1} max={1}
+                <Slider initialValue={friction} value={"Коэффициент трения"} min={0.1} max={1}
                         onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                 <div className={"hide"}>{friction}</div>
                 <div>

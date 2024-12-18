@@ -6,12 +6,12 @@ import React from "react";
  *  min - минимальное значение
  *  max - максимальное значение
  * */
-const Slider = ({id, value, min, max, onChange, step}) => {
+const Slider = ({id, value, min, max, onChange, step, initialValue}) => {
     return (
         <div className={"slider"}>
             <label htmlFor={id}>{"" + value}</label><br/>
             <label htmlFor={id}>{min}</label>
-            <input className={"inputSlider"} type={"range"} id={id} min={min} max={max} onChange={onChange} step={step}/>
+            <input value={initialValue} className={"inputSlider"} type={"range"} id={id} min={min} max={max} onChange={onChange} step={step}/>
             <label htmlFor={id}>{max}</label>
         </div>
     )

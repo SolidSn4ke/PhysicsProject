@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 export const caseSlice = createSlice({
     name: 'cases',
     initialState: {
-        case: 3,
+        case: 1,
         ballMass: 10,
         stiffness: 300,
         deformation: 5,
