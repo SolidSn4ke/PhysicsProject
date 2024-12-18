@@ -11,6 +11,7 @@ import {
 } from "../js/caseSlice";
 import {useDispatch, useSelector} from "react-redux";
 import Scene from "./Scene";
+import ResultTable from "./ResultTable";
 
 /**
  Компонент основной страницы
@@ -44,14 +45,14 @@ function Main() {
                         <input type={"button"} className={"scenarioButton"} id={"case3"} value={"Ситуация 3"}
                                onClick={() => dispatch(changeCase(3))}/>
                     </div>
-                    <Slider id={"ballSlider"} value={"Масса шарика"} min={1} max={100} onChange={(e) => {
+                    <Slider id={"ballSlider"} value={"Масса шарика"} min={5} max={15} onChange={(e) => {
                         dispatch(changeBallMass(e.target.value))
                     }}/>
                     <div className={"hide"}>{ballMass}</div>
-                    <Slider id={"cartSlider"} value={"Масса тележки"} min={1} max={100}
+                    <Slider id={"cartSlider"} value={"Масса тележки"} min={10} max={100}
                             onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                     <div className={"hide"}>{carMass}</div>
-                    <Slider value={"Масса второй тележки"} min={1} max={100}
+                    <Slider value={"Масса второй тележки"} min={10} max={100}
                             onChange={(e) => dispatch(changeCar2Mass(e.target.value))}/>
                     <div className={"hide"}>{car2Mass}</div>
                     <Slider value={"Жесткость пружины"} min={100} max={500}
@@ -60,7 +61,7 @@ function Main() {
                     <Slider value={"Деформация пружины (в см)"} max={10} min={1}
                             onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                     <div className={"hide"}>{deformation}</div>
-                    <Slider value={"Коэффициент трения"} min={0.1} max={1}
+                    <Slider value={"Коэффициент трения"} min={0} max={1}
                             onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                     <div className={"hide"}>{friction}</div>
                 </div>
@@ -86,11 +87,11 @@ function Main() {
                     <input type={"button"} className={"scenarioButton"} id={"case3"} value={"Ситуация 3"}
                            onClick={() => dispatch(changeCase(3))}/>
                 </div>
-                <Slider id={"ballSlider"} value={"Масса шарика"} min={1} max={100} onChange={(e) => {
+                <Slider id={"ballSlider"} value={"Масса шарика"} min={5} max={15} onChange={(e) => {
                     dispatch(changeBallMass(e.target.value))
                 }}/>
                 <div className={"hide"}>{ballMass}</div>
-                <Slider id={"cartSlider"} value={"Масса тележки"} min={1} max={100}
+                <Slider id={"cartSlider"} value={"Масса тележки"} min={10} max={100}
                         onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                 <div className={"hide"}>{carMass}</div>
                 <Slider value={"Жесткость пружины"} min={100} max={500}
@@ -99,9 +100,10 @@ function Main() {
                 <Slider value={"Деформация пружины (в см)"} max={10} min={1}
                         onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                 <div className={"hide"}>{deformation}</div>
-                <Slider value={"Коэффициент трения"} min={0.1} max={1}
+                <Slider value={"Коэффициент трения"} min={0} max={1}
                         onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                 <div className={"hide"}>{friction}</div>
+                <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100} friction={friction}></ResultTable>
             </div>
         </div>
     );

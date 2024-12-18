@@ -4,12 +4,12 @@ export const caseSlice = createSlice({
     name: 'cases',
     initialState: {
         case: 1,
-        ballMass: 50,
+        ballMass: 10,
         stiffness: 300,
         deformation: 5,
-        carMass: 50,
-        car2Mass: 50,
-        friction: 0.5
+        carMass: 55,
+        car2Mass: 55,
+        friction: 0.6
     },
     reducers: {
         changeCase: (state, action) => {
