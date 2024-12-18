@@ -10,8 +10,9 @@ function ResultTable(props) {
     if (props.isSleeping) return
 
     if (props.cases === 1) return (
-        <div>
+        <div id={"results"}>
             <table>
+                <caption>Результаты</caption>
                 <tbody>
                 <tr>
                     <td>Тележка проехала</td>
@@ -23,8 +24,9 @@ function ResultTable(props) {
     )
 
     if (props.cases === 2) return (
-        <div>
+        <div id={"results"}>
             <table>
+                <caption>Результаты</caption>
                 <tbody>
                 <tr>
                     <td>Первая тележка проехала</td>
@@ -40,8 +42,9 @@ function ResultTable(props) {
     )
 
     if (props.cases === 3) return (
-        <div>
+        <div id={"results"}>
             <table>
+                <caption>Результаты</caption>
                 <tbody>
                 <tr>
                     <td>Тележка проехала</td>

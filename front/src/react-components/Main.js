@@ -52,28 +52,28 @@ function Main() {
                         <input type={"button"} className={"scenarioButton"} id={"case3"} value={"Ситуация 3"}
                                onClick={() => dispatch(changeCase(3))}/>
                     </div>
-                    <Slider id={"ballSlider"} value={"Масса шарика"} min={5} max={15} onChange={(e) => {
+                    <Slider id={"ballSlider"} value={"Масса шарика (грамм)"} min={5} max={15} onChange={(e) => {
                         dispatch(changeBallMass(e.target.value))
                     }}/>
                     <div className={"hide"}>{ballMass}</div>
-                    <Slider id={"cartSlider"} value={"Масса тележки"} min={10} max={100}
+                    <Slider id={"cartSlider"} value={"Масса тележки (грамм)"} min={10} max={100}
                             onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                     <div className={"hide"}>{carMass}</div>
-                    <Slider value={"Масса второй тележки"} min={10} max={100}
+                    <Slider value={"Масса второй тележки (грамм)"} min={10} max={100}
                             onChange={(e) => dispatch(changeCar2Mass(e.target.value))}/>
                     <div className={"hide"}>{car2Mass}</div>
                     <Slider value={"Жесткость пружины"} min={100} max={500}
                             onChange={(e) => dispatch(changeStiffness(e.target.value))}/>
                     <div className={"hide"}>{stiffness}</div>
-                    <Slider value={"Деформация пружины (в см)"} max={10} min={1}
+                    <Slider value={"Деформация пружины (см)"} max={10} min={1}
                             onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                     <div className={"hide"}>{deformation}</div>
                     <Slider value={"Коэффициент трения"} min={0.1} max={1}
                             onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                     <div className={"hide"}>{friction}</div>
                     <div>
-                        <input type={"button"} onClick={updateScene} value={"Запуск"}/>
-                        <input type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
+                        <input id={"startButton"} type={"button"} onClick={updateScene} value={"Запуск"}/>
+                        <input id={"resetButton"} type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
                     </div>
                     <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100}
                                  friction={friction} isSleeping={isSleeping} car2Mass={car2Mass / 1000} cases={cases}></ResultTable>
@@ -100,25 +100,25 @@ function Main() {
                     <input type={"button"} className={"scenarioButton"} id={"case3"} value={"Ситуация 3"}
                            onClick={() => dispatch(changeCase(3))}/>
                 </div>
-                <Slider id={"ballSlider"} value={"Масса шарика"} min={5} max={15} onChange={(e) => {
+                <Slider id={"ballSlider"} value={"Масса шарика (грамм)"} min={5} max={15} onChange={(e) => {
                     dispatch(changeBallMass(e.target.value))
                 }}/>
                 <div className={"hide"}>{ballMass}</div>
-                <Slider id={"cartSlider"} value={"Масса тележки"} min={10} max={100}
+                <Slider id={"cartSlider"} value={"Масса тележки (грамм)"} min={10} max={100}
                         onChange={(e) => dispatch(changeCarMass(e.target.value))}/>
                 <div className={"hide"}>{carMass}</div>
                 <Slider value={"Жесткость пружины"} min={100} max={500}
                         onChange={(e) => dispatch(changeStiffness(e.target.value))}/>
                 <div className={"hide"}>{stiffness}</div>
-                <Slider value={"Деформация пружины (в см)"} max={10} min={1}
+                <Slider value={"Деформация пружины (см)"} max={10} min={1}
                         onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                 <div className={"hide"}>{deformation}</div>
                 <Slider value={"Коэффициент трения"} min={0.1} max={1}
                         onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                 <div className={"hide"}>{friction}</div>
                 <div>
-                    <input type={"button"} onClick={updateScene} value={"Запуск"}/>
-                    <input type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
+                    <input id={"startButton"} type={"button"} onClick={updateScene} value={"Запуск"}/>
+                    <input id={"resetButton"} type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
                 </div>
                 <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100}
                              friction={friction} isSleeping={isSleeping} cases={cases} car2Mass={car2Mass}></ResultTable>

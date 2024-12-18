@@ -135,7 +135,7 @@ const Scene = (props) => {
                 height: 600,
                 showVelocity: true,
                 background: 'rgba(255, 0, 0, 0.5)',
-                wireframes: false,
+                wireframes: true,
             },
         });
 
