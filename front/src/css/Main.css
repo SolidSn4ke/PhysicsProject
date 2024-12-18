@@ -39,7 +39,7 @@
     display: none;
 }
 
-.inputSlider:hover + .hide {
+.slider:hover + .hide {
     display: block;
 }
 

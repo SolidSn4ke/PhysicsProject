@@ -7,7 +7,7 @@ import Matter from 'matter-js';
  * k - коэффициент жесткости пружины (0.2 <= k <= 1)
  * */
 function elasticPotentialEnergy(x, k) {
-    return 0.5 * k / 500 * x ** 2
+    return 0.5 * k * x ** 2
 }
 
 /** Функция для нахождения скорости тележки
@@ -16,7 +16,7 @@ function elasticPotentialEnergy(x, k) {
  * m - масса шарика
  * */
 function getVelocity(x, k, m) {
-    return Math.sqrt(2 * elasticPotentialEnergy(x, k) / m)
+    return Math.sqrt(2 * elasticPotentialEnergy(x, k) / m) * 0.4
 }
 
 const Scene = (props) => {
@@ -38,6 +38,7 @@ const Scene = (props) => {
         const car = Composite.create({label: 'Car'}),
             body = Bodies.rectangle(xx, yy, width, height, {
                 mass: mass,
+                isSleeping: props.isSleeping,
                 collisionFilter: {
                     group: group
                 },
@@ -48,6 +49,7 @@ const Scene = (props) => {
             collisionFilter: {
                 group: group
             },
+            isSleeping: props.isSleeping,
             mass: mass,
             friction: props.friction
         });
@@ -56,6 +58,7 @@ const Scene = (props) => {
             collisionFilter: {
                 group: group
             },
+            isSleeping: props.isSleeping,
             mass: mass,
             friction: props.friction
         });
@@ -88,6 +91,7 @@ const Scene = (props) => {
                 id: 1000,
                 inertia: Infinity,
                 mass: mass,
+                isSleeping: props.isSleeping,
                 collisionFilter: {
                     group: group
                 }
@@ -165,6 +169,7 @@ const Scene = (props) => {
             ball = Bodies.circle(700, 450, 10, {
                 restitution: 0.9,
                 mass: props.ballMass,
+                isSleeping: props.isSleeping,
                 render: {
                     fillStyle: 'yellow',
                 },
@@ -183,6 +188,7 @@ const Scene = (props) => {
 
             ball = Bodies.circle(700, 450, 10, {
                 restitution: 0.9,
+                isSleeping: props.isSleeping,
                 mass: props.ballMass,
                 render: {
                     fillStyle: 'yellow',
@@ -202,6 +208,7 @@ const Scene = (props) => {
 
             ball = Bodies.circle(100, 450, 10, {
                 restitution: 0.9,
+                isSleeping: props.isSleeping,
                 mass: props.ballMass,
                 render: {
                     fillStyle: 'yellow',
@@ -209,7 +216,12 @@ const Scene = (props) => {
             });
 
             Events.on(engine, 'afterUpdate', () => {
-                if (Matter.Collision.collides(ball, Composite.get(car2, 1000, "body")) !== null) {
+                if (ball.angularVelocity > 5) {
+                    console.log(ball.angularVelocity)
+                    ball.setAngularVelocity(5)
+                }
+                if (ball.position.x > 390 || Matter.Collision.collides(ball, Composite.get(car2, 1000, "body")) !== null) {
+                    console.log(ball.angularVelocity)
                     //ball.collisionFilter.group = group2;
                     let newBall = Bodies.circle(Composite.get(car2, 1000, "body").position.x, Composite.get(car2, 1000, "body").position.y, 10, {
                         restitution: 0.9,
@@ -230,6 +242,12 @@ const Scene = (props) => {
                     Composite.addBody(car2, newBall)
                     Composite.addConstraint(car2, attachBall)
 
+                    Body.applyForce(Composite.allBodies(car2)[0], Composite.allBodies(car2)[0].position, {
+                        x: Math.sqrt(props.ballMass / (props.ballMass + props.car2Mass)) * getVelocity(props.x, props.k, props.ballMass) / 4,
+                        y: 0
+                    })
+                    console.log(Math.sqrt(props.ballMass / (props.ballMass + props.car2Mass)) * getVelocity(props.x, props.k, props.ballMass) / 10)
+
                     Events.off(engine)
                     World.remove(engine.world, ball)
                 }
@@ -238,15 +256,13 @@ const Scene = (props) => {
             World.add(engine.world, [floor, ball, mouseConstraint, car, car2]);
         }
 
-        console.log(getVelocity(props.x, props.k, ball.mass))
-
         Body.applyForce(ball, ball.position, {
             x: getVelocity(props.x, props.k, ball.mass),
             y: 0
         })
 
         Body.setVelocity(Composite.allBodies(car)[0], {
-            x: -getVelocity(props.x, props.k, ball.mass) * ball.mass / Composite.allBodies(car)[1].mass,
+            x: -getVelocity(props.x, props.k, ball.mass) * ball.mass / Composite.allBodies(car)[1].mass * (1.1 - props.friction),
             y: 0
         })
 
@@ -257,7 +273,7 @@ const Scene = (props) => {
         return () => {
             Matter.Engine.clear(engine)
         }
-    }, [props.ballMass, props.x, props.k, props.carMass, props.cases, props.car2Mass, props.friction]);
+    }, [props.ballMass, props.x, props.k, props.carMass, props.cases, props.car2Mass, props.friction, props.isSleeping]);
 
     return (
         <div ref={boxRef}>

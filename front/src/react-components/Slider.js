@@ -8,10 +8,10 @@ import React from "react";
  * */
 const Slider = ({id, value, min, max, onChange, step}) => {
     return (
-        <div className={"inputSlider"}>
+        <div className={"slider"}>
             <label htmlFor={id}>{"" + value}</label><br/>
             <label htmlFor={id}>{min}</label>
-            <input type={"range"} id={id} min={min} max={max} onInput={onChange} step={step}/>
+            <input className={"inputSlider"} type={"range"} id={id} min={min} max={max} onChange={onChange} step={step}/>
             <label htmlFor={id}>{max}</label>
         </div>
     )

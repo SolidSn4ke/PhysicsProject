@@ -7,11 +7,13 @@ import {
     changeCase,
     changeDeformation,
     changeFriction,
+    changeSleeping,
     changeStiffness
 } from "../js/caseSlice";
 import {useDispatch, useSelector} from "react-redux";
 import Scene from "./Scene";
 import ResultTable from "./ResultTable";
+
 
 /**
  Компонент основной страницы
@@ -24,7 +26,12 @@ function Main() {
     const carMass = useSelector((state) => state.carMass)
     const car2Mass = useSelector((state) => state.car2Mass)
     const friction = useSelector((state) => state.friction)
+    const isSleeping = useSelector((state) => state.isSleeping)
     const dispatch = useDispatch();
+
+    function updateScene() {
+        dispatch(changeSleeping(false))
+    }
 
     /** 2 и 3 случаи */
     if (cases === 2 || cases === 3) {
@@ -33,7 +40,7 @@ function Main() {
                 {/** Блок с графикой */}
                 <div id={"graph"}>
                     <Scene ballMass={ballMass} k={stiffness} x={deformation} carMass={carMass} car2Mass={car2Mass}
-                           cases={cases} friction={friction}/>
+                           cases={cases} friction={friction} isSleeping={isSleeping}/>
                 </div>
                 {/** Блок с элементами управления*/}
                 <div id={"controls"}>
@@ -61,9 +68,15 @@ function Main() {
                     <Slider value={"Деформация пружины (в см)"} max={10} min={1}
                             onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                     <div className={"hide"}>{deformation}</div>
-                    <Slider value={"Коэффициент трения"} min={0} max={1}
+                    <Slider value={"Коэффициент трения"} min={0.1} max={1}
                             onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                     <div className={"hide"}>{friction}</div>
+                    <div>
+                        <input type={"button"} onClick={updateScene} value={"Запуск"}/>
+                        <input type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
+                    </div>
+                    <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100}
+                                 friction={friction} isSleeping={isSleeping}></ResultTable>
                 </div>
             </div>
         )
@@ -75,7 +88,7 @@ function Main() {
             {/** Блок с графикой */}
             <div id={"graph"}>
                 <Scene ballMass={ballMass} k={stiffness} x={deformation} carMass={carMass} cases={cases}
-                       friction={friction}/>
+                       friction={friction} isSleeping={isSleeping}/>
             </div>
             {/** Блок с элементами управления*/}
             <div id={"controls"}>
@@ -100,10 +113,15 @@ function Main() {
                 <Slider value={"Деформация пружины (в см)"} max={10} min={1}
                         onChange={(e) => dispatch(changeDeformation(e.target.value))}/>
                 <div className={"hide"}>{deformation}</div>
-                <Slider value={"Коэффициент трения"} min={0} max={1}
+                <Slider value={"Коэффициент трения"} min={0.1} max={1}
                         onChange={(e) => dispatch(changeFriction(e.target.value))} step={0.1}/>
                 <div className={"hide"}>{friction}</div>
-                <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100} friction={friction}></ResultTable>
+                <div>
+                    <input type={"button"} onClick={updateScene} value={"Запуск"}/>
+                    <input type={"button"} onClick={() => dispatch(changeSleeping(true))} value={"Сброс"}/>
+                </div>
+                <ResultTable carMass={carMass / 1000} ballMass={ballMass / 1000} k={stiffness} x={deformation / 100}
+                             friction={friction} isSleeping={isSleeping} cases={cases}></ResultTable>
             </div>
         </div>
     );
